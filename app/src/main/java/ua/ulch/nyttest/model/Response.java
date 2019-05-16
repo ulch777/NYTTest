@@ -3,7 +3,7 @@ package ua.ulch.nyttest.model;
 import java.io.Serializable;
 import java.util.Arrays;
 
-public class Response implements Serializable {
+public class Response {
     private String copyright;
 
     private Results[] results;

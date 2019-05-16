@@ -38,4 +38,9 @@ public class MainActivity extends AppCompatActivity {
             ft.commit();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
 }

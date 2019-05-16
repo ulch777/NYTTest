@@ -2,13 +2,14 @@ package ua.ulch.nyttest.program;
 
 import android.app.Application;
 
-import ua.ulch.nyttest.networking.RetrofitSingleton;
+import ua.ulch.nyttest.networking.NYTApiService;
+
 
 public class App extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        RetrofitSingleton.init();
+        NYTApiService.init();
     }
 }
