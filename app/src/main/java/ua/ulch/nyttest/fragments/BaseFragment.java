@@ -3,6 +3,7 @@ package ua.ulch.nyttest.fragments;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,15 +19,15 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import rx.subjects.BehaviorSubject;
 import ua.ulch.nyttest.R;
 import ua.ulch.nyttest.adapter.ItemListAdapter;
@@ -43,7 +44,7 @@ public abstract class BaseFragment extends Fragment {
     public static final String TYPE_EMAILED = "emailed/";
     public static final String TYPE_SHARED = "shared/";
     public static final String FACEBOOK = "/facebook";
-    protected Subscription subscription;
+    protected Disposable subscription;
     protected Observable<Response> observableRetrofit;
     protected BehaviorSubject<Response> observableItemsList;
     @BindView(R.id.rv)
@@ -55,20 +56,15 @@ public abstract class BaseFragment extends Fragment {
     protected boolean isLoading;
 
 
-    /**
-     * this method used to Set root layout of the fragment
-     */
-//    protected abstract int getLayoutRes();
-
-    /**
-     * this method used to initiate all the resources in the Fragment
-     */
-
     protected abstract void restore(Bundle bundle);
 
     protected abstract void getObservable();
 
-    public abstract void shoWUnavailable();
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,29 +78,48 @@ public abstract class BaseFragment extends Fragment {
             showLoadingIndicator(true);
             getItemsList();
         }
-
-        // Inflate the layout for this fragment
         return rootView;
     }
 
     protected void initRes() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        itemAdapter = new ItemListAdapter(items);
+        itemAdapter = new ItemListAdapter(items, getActivity() );
         recyclerView.setAdapter(itemAdapter);
     }
 
     protected void getItemsList() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
         }
-        subscription = getItemsObservable().
+
+         observableRetrofit.
                 subscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).
-                subscribe(new Subscriber<Response>() {
+                subscribe(new Observer<Response>() {
                     @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "onCompleted");
+                    public void onSubscribe(Disposable d) {
+
                     }
+
+                    @Override
+                    public void onNext(Response response) {
+                        int prevSize = items.size();
+                        isLoading = false;
+                        runLayoutAnimation(recyclerView);
+                        if (isAdded()) {
+                            itemAdapter.notifyItemRangeRemoved(0, prevSize);
+                        }
+                        items.clear();
+                        items.addAll(Arrays.asList(response.getResults()));
+                        if (isAdded()) {
+                            itemAdapter.notifyItemRangeInserted(0, items.size());
+                            showLoadingIndicator(false);
+                            runLayoutAnimation(recyclerView);
+                        }
+
+                    }
+
+
 
                     @Override
                     public void onError(Throwable e) {
@@ -116,7 +131,7 @@ public abstract class BaseFragment extends Fragment {
                                     .setAction(R.string.try_again, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            resetItemsObservable();
+//                                            resetItemsObservable();
                                             showLoadingIndicator(true);
                                             getItemsList();
                                         }
@@ -126,74 +141,18 @@ public abstract class BaseFragment extends Fragment {
                     }
 
                     @Override
-                    public void onNext(Response newModels) {
-                        Log.d(TAG, "onNext: " + newModels.getNum_results());
-                        int prevSize = items.size();
-                        isLoading = false;
-                        runLayoutAnimation(recyclerView);
-                        if (isAdded()) {
-                            itemAdapter.notifyItemRangeRemoved(0, prevSize);
-                        }
-                        items.clear();
-                        items.addAll(Arrays.asList(newModels.getResults()));
-                        if (isAdded()) {
-                            itemAdapter.notifyItemRangeInserted(0, items.size());
-                            showLoadingIndicator(false);
-                            runLayoutAnimation(recyclerView);
-                        }
+                    public void onComplete() {
+                        Log.d(TAG, "onCompleted");
 
                     }
                 });
     }
 
-    /**
-     * OnFragmentInteractionListener
-     * <p>
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that activity.
-     */
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(int interaction, HashMap<String, String> data);
-    }
-
-
-    public void resetItemsObservable() {
-        observableItemsList = BehaviorSubject.create();
-
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        subscription = observableRetrofit.subscribe(new Subscriber<Response>() {
-            @Override
-            public void onCompleted() {
-                Log.e("ItemList", "onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                observableItemsList.onError(e);
-            }
-
-            @Override
-            public void onNext(Response models) {
-                observableItemsList.onNext(models);
-            }
-        });
-    }
-
-    public Observable<Response> getItemsObservable() {
-        if (observableItemsList == null) {
-            resetItemsObservable();
-        }
-        return observableItemsList;
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
         }
     }
 
@@ -205,6 +164,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private void showLoadingIndicator(boolean show) {
+
         isLoading = show;
         if (isLoading) {
             loadingIndicator.setVisibility(View.VISIBLE);
@@ -219,4 +179,7 @@ public abstract class BaseFragment extends Fragment {
             loadingIndicator.setVisibility(View.GONE);
         }
     }
+
 }
+
+

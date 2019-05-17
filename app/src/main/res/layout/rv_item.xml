@@ -13,17 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="59dp"
         android:orientation="horizontal"
-        android:padding="@dimen/padding_small">
+        android:padding="@dimen/padding_small"
+        android:weightSum="100">
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="56dp"
+            android:layout_width="0dp"
             android:layout_height="56dp"
+            android:layout_weight="20"
             android:src="@mipmap/ic_launcher" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="65"
             android:orientation="vertical">
 
             <TextView
@@ -46,15 +49,23 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:maxLines="1"
                 android:padding="@dimen/padding_medium"
                 android:textColor="@color/black"
                 android:textSize="@dimen/font_5"
-                tools:text="desription"
-                android:maxLines="1"
-                android:ellipsize="end"/>
+                tools:text="desription" />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivFavorite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="15"
+            android:src="@drawable/ic_favorite_grey_24dp" />
     </LinearLayout>
 
 

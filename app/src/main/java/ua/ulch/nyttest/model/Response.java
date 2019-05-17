@@ -1,6 +1,4 @@
 package ua.ulch.nyttest.model;
-
-import java.io.Serializable;
 import java.util.Arrays;
 
 public class Response {

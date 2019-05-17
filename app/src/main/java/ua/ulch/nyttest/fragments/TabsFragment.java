@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import ua.ulch.nyttest.MainActivity;
 import ua.ulch.nyttest.R;
 
 public class TabsFragment extends Fragment {
@@ -53,11 +52,12 @@ public class TabsFragment extends Fragment {
 
     public class PagerAdapter extends FragmentPagerAdapter {
 
-        private String[] tabTitles = new String[]{"The most emailed", "The most shared", "The most viewed",};
+        private String[] tabTitles = new String[]{"The most emailed", "The most shared", "The most viewed", "Favorites"};
         private Context context;
         private EmailedFragment emailedFragment;
         private SharedFragment sharedFragment;
         private ViewedFragment viewedFragment;
+        private FavoritesFragment favoritesFragment;
 
         public PagerAdapter(FragmentManager fm, Context context) {
             super(fm);
@@ -65,6 +65,7 @@ public class TabsFragment extends Fragment {
             emailedFragment = new EmailedFragment();
             sharedFragment = new SharedFragment();
             viewedFragment = new ViewedFragment();
+            favoritesFragment = new FavoritesFragment();
         }
 
         @Override
@@ -82,6 +83,8 @@ public class TabsFragment extends Fragment {
                     return sharedFragment;
                 case 2:
                     return viewedFragment;
+                case 3:
+                    return favoritesFragment;
             }
 
             return null;

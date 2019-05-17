@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Arrays;
 
 public class Results implements Parcelable {
-//    private String[] per_facet;
 
     private String email_count;
 
@@ -17,8 +16,6 @@ public class Results implements Parcelable {
     private String subsection;
 
     private String count_type;
-
-//    private String[] org_facet;
 
     private String column;
 
@@ -38,15 +35,11 @@ public class Results implements Parcelable {
 
     private String title;
 
-//    private String[] des_facet;
-
     private String uri;
 
     private String url;
 
     private String adx_keywords;
-
-//    private String geo_facet;
 
     private String id;
 

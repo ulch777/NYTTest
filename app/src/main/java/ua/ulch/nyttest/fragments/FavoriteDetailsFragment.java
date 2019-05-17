@@ -12,26 +12,27 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import ua.ulch.nyttest.R;
 
-public class DetailsFragment extends Fragment {
-    private static final String LINK = "link";
-    private static final String KEY_LINK = "key_link";
-    private String url;
+public class FavoriteDetailsFragment extends Fragment {
+    private static final String HTML = "filename";
+    private static final String KEY_HTML = "key_html";
+    private String filename;
     @BindView(R.id.wv)
     WebView webView;
     @BindView(R.id.ivBack)
     ImageView ivBack;
 
-    public static DetailsFragment newInstance(String url) {
+    public static FavoriteDetailsFragment newInstance(String url) {
 
         Bundle args = new Bundle();
-        args.putString(LINK, url);
-        DetailsFragment fragment = new DetailsFragment();
+        args.putString(HTML, url);
+        FavoriteDetailsFragment fragment = new FavoriteDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,14 +41,13 @@ public class DetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            url = savedInstanceState.getString(KEY_LINK);
+            filename = savedInstanceState.getString(KEY_HTML);
         } else {
             Bundle args = getArguments();
             if (args != null)
-                url = args.getString(LINK);
+                filename = args.getString(HTML);
         }
-        Log.e("DetailsFragment", url);
-        setRetainInstance(true);
+        Log.e("FavoriteDetailsFragment", filename);
     }
 
     @Nullable
@@ -55,28 +55,30 @@ public class DetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         ButterKnife.bind(this, rootView);
-        initWebView(url);
+        initWebView(filename);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Objects.requireNonNull(getActivity()).onBackPressed();
             }
         });
-
         return rootView;
     }
 
-    private void initWebView(String url) {
+    private void initWebView(String html) {
+        final String mimeType = "text/filename";
+        final String encoding = "UTF-8";
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.setWebViewClient(new WebViewClient());
-        webView.loadUrl(url);
+        File file = new File(filename);
+        webView.loadUrl("file:///storage/emulated/0/nyt_test/100000006497865.html");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(KEY_LINK, url);
+        outState.putString(KEY_HTML, filename);
     }
 }
