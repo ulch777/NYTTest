@@ -61,7 +61,7 @@ public class FavoritesFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (!subscription.isDisposed())
+        if (subscription!= null && !subscription.isDisposed())
         subscription.dispose();
     }
 }
