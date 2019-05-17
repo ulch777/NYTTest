@@ -70,11 +70,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
                     saveToFavorites(res);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
         });
     }
@@ -99,7 +95,7 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
 
     }
 
-    private void saveToFavorites(Results res) throws IOException {
+    private void saveToFavorites(Results res){
 
         Article article = new Article(Long.valueOf(res.getId()), res.getTitle()
                 , res.getPublished_date(), res.getUrl()
