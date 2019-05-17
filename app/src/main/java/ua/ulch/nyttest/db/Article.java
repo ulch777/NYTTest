@@ -4,12 +4,14 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
+import org.jetbrains.annotations.NotNull;
+
 @Entity
 public class Article {
     @PrimaryKey
     private long id;
     private String title;
-    private String publisedDate;
+    private String publishedDate;
     private String url;
     private String image;
     private String html;
@@ -17,10 +19,15 @@ public class Article {
     public Article() {
     }
 @Ignore
-    public Article(long id, String title, String publisedDate, String url, String image, String html) {
+    public Article(long id
+        , String title
+        , String publishedDate
+        , String url
+        , String image
+        , String html) {
         this.id = id;
         this.title = title;
-        this.publisedDate = publisedDate;
+        this.publishedDate = publishedDate;
         this.url = url;
         this.image = image;
         this.html = html;
@@ -66,20 +73,21 @@ public class Article {
         this.html = html;
     }
 
-    public String getPublisedDate() {
-        return publisedDate;
+    public String getPublishedDate() {
+        return publishedDate;
     }
 
-    public void setPublisedDate(String publisedDate) {
-        this.publisedDate = publisedDate;
+    public void setPublishedDate(String publishedDate) {
+        this.publishedDate = publishedDate;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Article{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", publisedDate='" + publisedDate + '\'' +
+                ", publishedDate='" + publishedDate + '\'' +
                 ", url='" + url + '\'' +
                 ", image='" + image + '\'' +
                 ", html='" + html + '\'' +

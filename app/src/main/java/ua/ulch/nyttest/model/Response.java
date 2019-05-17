@@ -1,4 +1,6 @@
 package ua.ulch.nyttest.model;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
 public class Response {
@@ -50,6 +52,7 @@ public class Response {
         this.status = status;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Response{" +

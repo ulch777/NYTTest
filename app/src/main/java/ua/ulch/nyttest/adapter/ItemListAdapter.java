@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.rv_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.rv_item, viewGroup, false);
 
         return new ViewHolder(v);
     }
@@ -64,7 +64,9 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) v.getContext()).showFragment(DetailsFragment.newInstance(url), R.id.container_body, true);
+                ((MainActivity) v.getContext())
+                        .showFragment(DetailsFragment.newInstance(url)
+                                , R.id.container_body, true);
             }
         });
         viewHolder.ivFavorite.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +117,6 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
         @Override
         protected Void doInBackground(final Article... articles) {
             try {
-//                String html = Jsoup.connect(articles[0].getUrl()).get().html();
                 String filename = articles[0].getId() + ".html";
                 Document document = Jsoup.connect(articles[0].getUrl()).get();
                 ReadWriteUtil.saveDocument(document, filename);
@@ -124,8 +125,8 @@ public class ItemListAdapter extends RecyclerView.Adapter<ItemListAdapter.ViewHo
                         .downsample(DownsampleStrategy.CENTER_INSIDE)
                         .skipMemoryCache(true)
                         .diskCacheStrategy(DiskCacheStrategy.NONE);
-                final String imagename = articles[0].getImage().substring(articles[0].getImage().lastIndexOf("/") + 1);
-                Log.e("filename", imagename);
+                final String imagename = articles[0].getImage()
+                        .substring(articles[0].getImage().lastIndexOf("/") + 1);
                 Bitmap bitmap = Glide.with(activity)
                         .asBitmap()
                         .load(articles[0].getImage())

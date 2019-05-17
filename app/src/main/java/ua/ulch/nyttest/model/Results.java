@@ -1,13 +1,13 @@
 package ua.ulch.nyttest.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class Results implements Parcelable {
+public class Results {
 
     private String email_count;
 
@@ -71,18 +71,6 @@ public class Results implements Parcelable {
         published_date = in.readString();
         updated = in.readString();
     }
-
-    public static final Creator<Results> CREATOR = new Creator<Results>() {
-        @Override
-        public Results createFromParcel(Parcel in) {
-            return new Results(in);
-        }
-
-        @Override
-        public Results[] newArray(int size) {
-            return new Results[size];
-        }
-    };
 
     public String getEmail_count ()
     {
@@ -286,6 +274,7 @@ public class Results implements Parcelable {
         this.updated = updated;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Results{" +
@@ -312,14 +301,4 @@ public class Results implements Parcelable {
                 '}';
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(published_date);
-    }
 }

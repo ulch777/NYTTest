@@ -56,9 +56,6 @@ public abstract class BaseFragment extends Fragment {
     ImageView loadingIndicator;
     protected boolean isLoading;
 
-
-    protected abstract void restore(Bundle bundle);
-
     protected abstract void getObservable();
 
     @Override
@@ -68,10 +65,9 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater
+            , ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base, container, false);
-        if (savedInstanceState != null)
-            restore(savedInstanceState);
         ButterKnife.bind(this, rootView);
         getObservable();
         initRes();
@@ -156,7 +152,8 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private void runLayoutAnimation(RecyclerView recyclerView) {
-        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
+        LayoutAnimationController controller = AnimationUtils
+                .loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
         recyclerView.setLayoutAnimation(controller);
         Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
@@ -167,10 +164,13 @@ public abstract class BaseFragment extends Fragment {
         isLoading = show;
         if (isLoading) {
             loadingIndicator.setVisibility(View.VISIBLE);
-            loadingIndicator.animate().setInterpolator(new AccelerateDecelerateInterpolator()).rotationBy(360).setDuration(500).setListener(new AnimatorListenerAdapter() {
+            loadingIndicator.animate().setInterpolator(new AccelerateDecelerateInterpolator())
+                    .rotationBy(360).setDuration(500).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    loadingIndicator.animate().setInterpolator(new AccelerateDecelerateInterpolator()).rotationBy(360).setDuration(500).setListener(this);
+                    loadingIndicator.animate().
+                            setInterpolator(new AccelerateDecelerateInterpolator())
+                            .rotationBy(360).setDuration(500).setListener(this);
                 }
             });
         } else {

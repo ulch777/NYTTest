@@ -26,7 +26,8 @@ public class TabsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater
+            , @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tabs, container, false);
         ButterKnife.bind(this, rootView);
         initRes();
@@ -50,7 +51,8 @@ public class TabsFragment extends Fragment {
 
     public class PagerAdapter extends FragmentPagerAdapter {
 
-        private String[] tabTitles = new String[]{"The most emailed", "The most shared", "The most viewed", "Favorites"};
+        private String[] tabTitles
+                = new String[]{"The most emailed", "The most shared", "The most viewed", "Favorites"};
         private Context context;
         private EmailedFragment emailedFragment;
         private SharedFragment sharedFragment;

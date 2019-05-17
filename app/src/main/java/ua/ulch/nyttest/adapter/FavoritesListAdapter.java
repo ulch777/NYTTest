@@ -2,7 +2,6 @@ package ua.ulch.nyttest.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,8 @@ public class FavoritesListAdapter extends RecyclerView.Adapter<FavoritesListAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.rv_favorite_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.rv_favorite_item, viewGroup, false);
 
         return new ViewHolder(v);
     }
@@ -37,8 +37,7 @@ public class FavoritesListAdapter extends RecyclerView.Adapter<FavoritesListAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         viewHolder.tvTitle.setText(articles.get(i).getTitle());
-        viewHolder.tvDate.setText(articles.get(i).getPublisedDate());
-        Log.e("image_uri", ReadWriteUtil.getUri(articles.get(i).getImage()));
+        viewHolder.tvDate.setText(articles.get(i).getPublishedDate());
         Glide.with(viewHolder.tvDate.getContext()).asBitmap()
                 .load(ReadWriteUtil.getUri(articles.get(i).getImage()))
                 .error(R.drawable.place_holder)
@@ -47,7 +46,9 @@ public class FavoritesListAdapter extends RecyclerView.Adapter<FavoritesListAdap
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) v.getContext()).showFragment(FavoriteDetailsFragment.newInstance(url), R.id.container_body, true);
+                ((MainActivity) v.getContext())
+                        .showFragment(FavoriteDetailsFragment.newInstance(url)
+                                , R.id.container_body, true);
             }
         });
     }

@@ -2,6 +2,8 @@ package ua.ulch.nyttest.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 
 public class Media {
@@ -65,6 +67,7 @@ public class Media {
         this.approved_for_syndication = approved_for_syndication;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Media{" +

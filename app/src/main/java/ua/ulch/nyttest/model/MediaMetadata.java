@@ -1,6 +1,7 @@
 package ua.ulch.nyttest.model;
 
 
+import org.jetbrains.annotations.NotNull;
 
 public class MediaMetadata {
     private String format;
@@ -51,6 +52,7 @@ public class MediaMetadata {
         this.height = height;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "MediaMetadata{" +

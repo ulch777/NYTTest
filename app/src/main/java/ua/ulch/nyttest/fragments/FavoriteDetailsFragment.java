@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import ua.ulch.nyttest.R;
 
 public class FavoriteDetailsFragment extends Fragment {
     private static final String HTML = "filename";
-    private static final String KEY_HTML = "key_html";
     private String filename;
     @BindView(R.id.wv)
     WebView webView;
@@ -39,14 +37,9 @@ public class FavoriteDetailsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            filename = savedInstanceState.getString(KEY_HTML);
-        } else {
             Bundle args = getArguments();
             if (args != null)
                 filename = args.getString(HTML);
-        }
-        Log.e("FavoriteDetailsFragment", filename);
     }
 
     @Nullable
@@ -73,9 +66,4 @@ public class FavoriteDetailsFragment extends Fragment {
         webView.loadUrl("file:///" + filename);
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(KEY_HTML, filename);
-    }
 }
