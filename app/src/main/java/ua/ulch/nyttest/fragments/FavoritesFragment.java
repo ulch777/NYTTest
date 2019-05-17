@@ -50,7 +50,7 @@ public class FavoritesFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Article>>() {
                     @Override
-                    public void accept(List<Article> articles) throws Exception {
+                    public void accept(List<Article> articles){
                         Log.e("accept", articles.toString());
                         adapter.updateList(articles);
                     }

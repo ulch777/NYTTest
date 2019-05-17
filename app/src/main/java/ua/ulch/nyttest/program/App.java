@@ -17,7 +17,6 @@ public class App extends Application {
         NYTApiService.init();
         instance = this;
         database = Room.databaseBuilder(this, ArticleDataBase.class, "database")
-//                .allowMainThreadQueries()
                 .build();
     }
 

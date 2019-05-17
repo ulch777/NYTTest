@@ -8,11 +8,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import org.jsoup.nodes.Document;
-
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class ReadWriteUtil {
@@ -22,7 +19,7 @@ public class ReadWriteUtil {
         boolean success = false;
         if (bitmap != null) {
             String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-            createDirIfNotExists(DIRECTORY_NAME);
+            createDirIfNotExists();
             String filePath = baseDir + "/" + DIRECTORY_NAME + File.separator + name;
             File imageFile = new File(filePath);
             if (!imageFile.exists()) {
@@ -34,7 +31,6 @@ public class ReadWriteUtil {
                     outputStream.flush();
                     outputStream.close();
                     success = true;
-//                    addImageToGallery(filePath, context);
                 } catch (IOException e) {
                     e.printStackTrace();
                     success = false;
@@ -48,7 +44,7 @@ public class ReadWriteUtil {
         boolean success = false;
         if (document != null) {
             String baseDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-            createDirIfNotExists(DIRECTORY_NAME);
+            createDirIfNotExists();
             String filePath = baseDir + "/" + DIRECTORY_NAME + File.separator + name;
             File file = new File(filePath);
             if (!file.exists()) {
@@ -94,22 +90,20 @@ public class ReadWriteUtil {
         if (imageFile.exists()) {
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(), bmOptions);
-//                return bitmap;
-//            }
+
         }
         return bitmap;
     }
 
-    private static boolean createDirIfNotExists(String path) {
+    private static void createDirIfNotExists() {
         boolean ret = true;
 
-        File file = new File(Environment.getExternalStorageDirectory(), path);
+        File file = new File(Environment.getExternalStorageDirectory(), ReadWriteUtil.DIRECTORY_NAME);
         if (!file.exists()) {
             if (!file.mkdirs()) {
                 ret = false;
             }
         }
-        return ret;
     }
     public static void addImageToGallery(final String filePath, final Context context) {
 

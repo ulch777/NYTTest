@@ -17,8 +17,11 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +31,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import rx.subjects.BehaviorSubject;
 import ua.ulch.nyttest.R;
 import ua.ulch.nyttest.adapter.ItemListAdapter;
 import ua.ulch.nyttest.model.Response;
@@ -46,7 +48,6 @@ public abstract class BaseFragment extends Fragment {
     public static final String FACEBOOK = "/facebook";
     protected Disposable subscription;
     protected Observable<Response> observableRetrofit;
-    protected BehaviorSubject<Response> observableItemsList;
     @BindView(R.id.rv)
     RecyclerView recyclerView;
     protected ArrayList<Results> items = new ArrayList<>();
@@ -67,7 +68,7 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base, container, false);
         if (savedInstanceState != null)
             restore(savedInstanceState);
@@ -119,8 +120,6 @@ public abstract class BaseFragment extends Fragment {
 
                     }
 
-
-
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError", e);
@@ -159,7 +158,7 @@ public abstract class BaseFragment extends Fragment {
     private void runLayoutAnimation(RecyclerView recyclerView) {
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
         recyclerView.setLayoutAnimation(controller);
-        recyclerView.getAdapter().notifyDataSetChanged();
+        Objects.requireNonNull(recyclerView.getAdapter()).notifyDataSetChanged();
         recyclerView.scheduleLayoutAnimation();
     }
 

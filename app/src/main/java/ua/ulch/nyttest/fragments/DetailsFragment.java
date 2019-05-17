@@ -1,5 +1,6 @@
 package ua.ulch.nyttest.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,6 +67,7 @@ public class DetailsFragment extends Fragment {
         return rootView;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView(String url) {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);

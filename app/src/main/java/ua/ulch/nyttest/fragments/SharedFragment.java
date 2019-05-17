@@ -1,6 +1,9 @@
 package ua.ulch.nyttest.fragments;
 
 import android.os.Bundle;
+
+import org.jetbrains.annotations.NotNull;
+
 import ua.ulch.nyttest.networking.NYTApiService;
 
 public class SharedFragment extends BaseFragment {
@@ -21,7 +24,7 @@ public class SharedFragment extends BaseFragment {
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(KEY_SHARED, items);
     }

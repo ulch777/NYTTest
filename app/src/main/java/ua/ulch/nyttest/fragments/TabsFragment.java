@@ -30,7 +30,6 @@ public class TabsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_tabs, container, false);
         ButterKnife.bind(this, rootView);
         initRes();
-        // Inflate the layout for this fragment
         return rootView;
 
     }
@@ -40,7 +39,6 @@ public class TabsFragment extends Fragment {
                 new PagerAdapter(getChildFragmentManager(), getContext());
         viewpager.setAdapter(pagerAdapter);
 
-        // Give the TabLayout the ViewPager
         tabLayout.setupWithViewPager(viewpager);
 
     }

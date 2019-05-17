@@ -2,6 +2,9 @@ package ua.ulch.nyttest.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
+
+import org.jetbrains.annotations.NotNull;
+
 import ua.ulch.nyttest.networking.NYTApiService;
 
 public class ViewedFragment extends BaseFragment {
@@ -24,7 +27,7 @@ public class ViewedFragment extends BaseFragment {
 
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NotNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(KEY_VIEWED, items);
     }

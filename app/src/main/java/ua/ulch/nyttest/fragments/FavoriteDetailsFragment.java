@@ -1,5 +1,6 @@
 package ua.ulch.nyttest.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,8 +12,6 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
-
-import java.io.File;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -65,15 +64,13 @@ public class FavoriteDetailsFragment extends Fragment {
         return rootView;
     }
 
-    private void initWebView(String html) {
-        final String mimeType = "text/filename";
-        final String encoding = "UTF-8";
+    @SuppressLint("SetJavaScriptEnabled")
+    private void initWebView(String filename) {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.setWebViewClient(new WebViewClient());
-        File file = new File(filename);
-        webView.loadUrl("file:///storage/emulated/0/nyt_test/100000006497865.html");
+        webView.loadUrl("file:///" + filename);
     }
 
     @Override
